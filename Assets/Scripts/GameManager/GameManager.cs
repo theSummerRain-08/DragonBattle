@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    #region Singleton
     public static GameManager Instance { get; private set; }
 
     private void Awake() {
@@ -15,5 +14,4 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    #endregion
 }
