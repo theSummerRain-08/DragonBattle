@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BgScroll : MonoBehaviour
 {
-    private float scrollSpeed = 0.3f;
+    private float scrollSpeed = 0.5f;
     private Material mat;
     private Vector2 offset = Vector2.zero;
 
