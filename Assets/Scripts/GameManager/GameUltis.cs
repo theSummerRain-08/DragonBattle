@@ -1,22 +1,26 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public static class GameUltis {
 
-    public static void DelayCall(this MonoBehaviour mono, float time, Action Callback) {
-        mono.StartCoroutine(IEDelayCall(time, Callback));
-    }
+    //public static void DelayCall(float time, Action Callback) {
+    //    StartCoroutine(IEDelayCall(time, Callback));
+    //}
     public static IEnumerator IEDelayCall(float time, Action Callback) {
         yield return new WaitForSeconds(time);
         Callback?.Invoke();
     }
 
-    public static int RandomNumber(int a, int b) {
-        return UnityEngine.Random.Range(a, b);
+    public static float RandomFloatNumber(float a, float b) {
+        float firstNum = a * 2;
+        float secondNum = b * 2;
+        return UnityEngine.Random.Range(firstNum, secondNum + 1) / 2;
     }
-
+    public static int RandomIntNumber(int a, int b) {
+        return UnityEngine.Random.Range(a, b + 1);
+    }
     public static T TryGetMonoComponent<T>(this MonoBehaviour mono, ref T tryValue) {
         if (tryValue == null)
             tryValue = mono.gameObject.GetComponent<T>();
@@ -30,7 +34,30 @@ public static class GameUltis {
         trans = obj.transform;
     }
 
-    public static string ObjectName(this MonoBehaviour mono) {
-        return mono.gameObject.name.Replace("(Clone)", "");
+    public static string ObjectName(GameObject obj) {
+        return obj.name.Replace("(Clone)", "");
+    }
+
+    public static void Hide(GameObject obj) {
+        obj.SetActive(false);
+    }
+
+    public static void SetParent(GameObject obj, Transform parent) {
+        obj.transform.SetParent(parent);
+    }
+
+    public static void Show(GameObject obj) {
+        obj.SetActive(true);
+    }
+
+    public static bool ExitScreen(Vector3 currentPosition) {
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(currentPosition);
+        return (screenPosition.x < 0 || screenPosition.x > Screen.width || screenPosition.y < 0|| screenPosition.y > Screen.height * 2);
+    }
+
+
+    public static bool ExitLeftScreen(Vector3 currentPosition) {
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(currentPosition);
+        return (screenPosition.x < 0 );
     }
 }

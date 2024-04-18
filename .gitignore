@@ -1,8 +1,24 @@
 # This .gitignore file should be placed at the root of your Unity project directory
 #
-# Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
+# Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
+
+.gitignore
+
+#Project Setting
+/ProjectSettings/ProjectSettings.asset
+/ProjectSettings/ProjectVersion.txt
+
+# Library directory
+#!/[Ll]ibrary/
 /[Ll]ibrary/
+#!/[Ll]ibrary/ScriptAssemblies/
+#/[Ll]ibrary/Artifacts/
+#/[Ll]ibrary/ShaderCache/
+#/[Ll]ibrary/PlayerDataCache/
+#/[Ll]ibrary/ArtifactDB
+#/[Ll]ibrary/SourceAssetDB
+
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
@@ -14,8 +30,15 @@
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
 
-# Recordings can get excessive in size
-/[Rr]ecordings/
+# Asset build info
+/[Aa]ssets/[Ss]treamingAssets/
+/[Aa]ssets/MSS/
+/[Aa]ssets/MG/
+build_info
+build_info.txt
+
+# Asset meta data should only be ignored when the corresponding asset is also ignored
+!/[Aa]ssets/**/*.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
@@ -57,9 +80,7 @@ sysinfo.txt
 
 # Builds
 *.apk
-*.aab
 *.unitypackage
-*.app
 
 # Crashlytics generated file
 crashlytics-build.properties

@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Background
+  - Enemy
+  - Shield
+  - PlayerSkill
+  - EnemySkill
+  - Buff
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -13,9 +19,9 @@ TagManager:
   - Water
   - UI
   - Background
-  - 
-  - 
-  - 
+  - Mask
+  - RightRaycast
+  - LeftRaycast
   - 
   - 
   - 
@@ -39,6 +45,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Particle
+    uniqueID: 3947470205
+    locked: 0
+  - name: UI
+    uniqueID: 2820367979
+    locked: 0
+  - name: GhostEffect
+    uniqueID: 1432167469
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
