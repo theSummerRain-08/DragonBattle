@@ -12,6 +12,7 @@ public class PlayerParticle : MonoBehaviour {
 
     [SerializeField] ParticleSystem kameha2Particle;
     [SerializeField] GameObject kameha2Obj;
+
     public void PlayHandParticle() {
         for (int i = 0; i < handParticle.Length; i++) {
             handParticle[i].Play();
@@ -55,4 +56,5 @@ public class PlayerParticle : MonoBehaviour {
         kameha2Obj.SetActive(false);
         kameha2Particle.Stop();
     }
+
 }

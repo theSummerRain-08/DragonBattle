@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CharacterStats : MonoBehaviour
-{
+public class CharacterStats : MonoBehaviour {
     public static CharacterStats Instance { get; private set; }
 
     private void Awake() {
@@ -13,23 +12,23 @@ public class CharacterStats : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject); 
+        DontDestroyOnLoad(gameObject);
     }
 
     [Header("Player Stat")]
     [SerializeField] private int playerLevel = 1;
-    [SerializeField] private float playerAtk = 10f;
+    [SerializeField] private float playerAtk = 6f;
     [SerializeField] private float playerHp = 100f;
     [SerializeField] private float playerMana = 100f;
 
     [Header("Enemy Stat")]
     [SerializeField] private int enemyLevel = 1;
-    [SerializeField] private float enemyAtk = 10f;
+    [SerializeField] private float enemyAtk = 25f;
     [SerializeField] private float enemyHp = 100f;
     [SerializeField] private float enemyMana = 100f;
 
     [SerializeField] private float previousEnemyLevel = 1;
-    
+
     public int PlayerLevel => playerLevel;
     public float PlayerAtk => playerAtk;
     public float PlayerHp => playerHp;
@@ -47,27 +46,29 @@ public class CharacterStats : MonoBehaviour
     public float maxEnemyHp = 100f;
     public float maxEnemyMana = 100f;
     [Header("")]
-    public float startCharacterAtk = 10f;
+    public float startPlayerAtk = 6f;
+    public float startEnemyAtk = 25f;
     public float startHp = 100f;
-
+    public float startMana = 100f;
     public int maxPlayerLevel = GameConstants.levelCharacter.Length;
+
     private void OnEnable() {
         enemyLevel = PlayerPrefs.GetInt("EnemyLevel", 0);
-        if (enemyLevel == 0) enemyLevel = 1;
+        if (enemyLevel <= 0) enemyLevel = 1;
         previousEnemyLevel = PlayerPrefs.GetInt("PreviousEnemyLevel", 0);
-        if (previousEnemyLevel == 0) previousEnemyLevel = 1;
+        if (previousEnemyLevel <= 0) previousEnemyLevel = 1;
         UpdateEnemyStats();
     }
     public void TakeDamage(Character character, float damage) {
-        if (character == Character.Player) { 
+        if (character == Character.Player) {
             playerHp -= damage;
         }
 
         if (character == Character.Enemy) {
-            enemyHp-= damage;
+            enemyHp -= damage;
         }
     }
-    public void UpdateEnemyPreviousLevel() { 
+    public void UpdateEnemyPreviousLevel() {
         previousEnemyLevel = enemyLevel;
         PlayerPrefs.SetInt("PreviousEnemyLevel", enemyLevel);
         PlayerPrefs.Save();
@@ -85,13 +86,12 @@ public class CharacterStats : MonoBehaviour
     public void TransformToNextLevel() {
         if (playerLevel == maxPlayerLevel)
             return;
-        
-        playerMana = maxPlayerMana;
-        playerHp = maxPlayerHp;
 
         playerLevel++;
         if (playerLevel >= maxPlayerLevel) playerLevel = maxPlayerLevel;
         UpdatePlayerStats(Character.Player);
+        playerMana = maxPlayerMana;
+        playerHp = maxPlayerHp;
     }
     //__________________________________________________________
 
@@ -102,9 +102,10 @@ public class CharacterStats : MonoBehaviour
     //__________________update funcion_________________________
     public void UpdatePlayerStats(Character character) {
         if (character == Character.Player) {
-            playerAtk = startCharacterAtk * playerLevel;
+            playerAtk = startPlayerAtk * playerLevel;
             playerHp = startHp * playerLevel;
             maxPlayerHp = startHp * playerLevel;
+            maxPlayerMana = startMana + 5 * (playerLevel - 1);
         }
     }
     public void UpdateEnemyStats(Results results) {
@@ -125,17 +126,22 @@ public class CharacterStats : MonoBehaviour
         }
     }
     void UpdateEnemyStats() {
-        enemyAtk = startCharacterAtk * enemyLevel;
-        enemyHp = startHp * enemyLevel;
-        maxEnemyHp = startHp * enemyLevel;
+        enemyAtk = EnemyStatsScale(startEnemyAtk, enemyLevel);
+        enemyHp = EnemyStatsScale(startHp , enemyLevel);
+        maxEnemyHp = EnemyStatsScale(startHp , enemyLevel);
     }
+    float EnemyStatsScale(float stats, float level) {
+        return (level != 1 ? (stats * level + stats * 0.5f) : (stats * level));
+    }
+
+
     public void ResetStats(Character character, bool restartLevel) {
         if (character == Character.Player) {
             if (restartLevel) {
                 playerLevel = 1;
                 UpdatePlayerStats(character);
             }
-            playerHp =  maxPlayerHp ;
+            playerHp = maxPlayerHp;
             playerMana = maxPlayerMana;
         }
 
@@ -144,7 +150,7 @@ public class CharacterStats : MonoBehaviour
         }
     }
     //__________________________________________________________
-    
+
 
 
 
@@ -159,4 +165,13 @@ public class CharacterStats : MonoBehaviour
         playerHp = maxPlayerHp;
     }
     //_________________________________________________________
+
+    private void Update() {
+        GainMana();
+    }
+    void GainMana() {
+        if (playerMana < maxPlayerMana) {
+            playerMana += 1f * Time.deltaTime;
+        }
+    }
 }

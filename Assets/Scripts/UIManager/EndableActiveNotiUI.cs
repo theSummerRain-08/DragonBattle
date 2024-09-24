@@ -12,7 +12,8 @@ public class EndableActiveNotiUI : MonoBehaviour
         mask.onClick.AddListener(DisableObject);
         okButton.onClick.AddListener(DisableObject);
     }
-    void DisableObject() { 
+    void DisableObject() {
+        SoundEffectManager.Instance.ActiveClickSound();
         this.gameObject.SetActive(false);
     }
 }

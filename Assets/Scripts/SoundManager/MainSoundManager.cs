@@ -29,5 +29,4 @@ public class MainSoundManager : MonoBehaviour
     public void DisplaySound() {
         mainSound.volume = 0;
     }
-
 }

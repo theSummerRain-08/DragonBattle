@@ -39,6 +39,7 @@ public class Skill1Obj : MonoBehaviour, ISkillObj {
             CharacterStats.Instance.TakeDamage(Character.Enemy,
                 CharacterStats.Instance.PlayerAtk * GameConstants.dmgScale[(int)AttackType.Skill1]);
         }
+        
     }
 
     private void OnDisable() {

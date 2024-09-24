@@ -10,7 +10,7 @@ public class BumpPartical : MonoBehaviour
         StartCoroutine(DisplayThisObj());   
     }
     IEnumerator DisplayThisObj() { 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2f);
         this.gameObject.SetActive(false);
     }
 

@@ -11,16 +11,21 @@ public static class GameConstants {
         70000000, 100000000, 200000000, 400000000, 500000000, 700000000, 800000000, 900000000, 1000000000};
 
     
-    public static int[] ManaToCastSkill = new int[6] { 10, 20, 30, 30, 30, 0 };
+    public static int[] ManaToCastSkill = new int[6] { 17, 50, 10, 50, 50, 0 };
 
-    public static float[] TimeToCastSkill = new float[6] { 0.6f, 3.5f, 0.6f, 0.2f, 0.6f, 1.5f };
+
+    public static float[] dmgScale = new float[5] { 0.5f, 8f, 1f, 16f, 8f };
+
+
+
+    public static float[] TimeToCastSkill = new float[6] { 0.1f, 3.5f, 0.1f, 0.2f, 0.1f, 1.5f };
 
     public static int[] levelCharacter = new int[21] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
     13, 14, 15, 16, 17, 18, 19, 20, 21};
 
     public static int[] enemyLevel = new int[10] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-    public static float[] dmgScale = new float[5] { 0.2f, 5f, 1f, 5f, 2f };
+    public static float[] enemyDelayTime = new float[10] { 5, 4.5f, 4, 3.5f, 3, 2.5f, 2.5f, 2f, 1.5f, 1 };
 
 
     public static float TimeToChange = 0.2f;

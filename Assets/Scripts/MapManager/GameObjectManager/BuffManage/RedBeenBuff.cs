@@ -24,7 +24,4 @@ public class RedBeenBuff : MonoBehaviour
         }
 
     }
-    private void OnDisable() {
-        this.gameObject.SetActive(false);
-    }
 }

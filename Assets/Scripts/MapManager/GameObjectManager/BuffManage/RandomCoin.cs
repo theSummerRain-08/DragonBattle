@@ -25,7 +25,4 @@ public class RandomCoin : MonoBehaviour
         }
 
     }
-    private void OnDisable() {
-        this.gameObject.SetActive(false);
-    }
 }

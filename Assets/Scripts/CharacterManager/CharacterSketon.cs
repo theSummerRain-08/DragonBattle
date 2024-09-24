@@ -12,28 +12,28 @@ public class CharacterSketon : MonoBehaviour {
     public string idleAnimation;
 
     [SpineAnimation]
-    public string skill_0Animation;
+    public string skill0Animation;
 
     [SpineAnimation]
-    public string skill_1Animation;
+    public string skill1Animation;
 
     [SpineAnimation]
-    public string skill_2Animation;
+    public string skill2Animation;
 
     [SpineAnimation]
-    public string skill_3Animation;
+    public string skill3Animation;
 
     [SpineAnimation]
-    public string skill_4Animation;
+    public string skill4Animation;
 
     [SpineAnimation]
     public string transformAnimation;
 
     [SpineAnimation]
-    public string tu_skill0Animation;
+    public string tuskill0Animation;
 
     [SpineAnimation]
-    public string tu_skill4Animation;
+    public string tuskill4Animation;
 
 
     [SpineAnimation]
@@ -129,9 +129,9 @@ public class CharacterSketon : MonoBehaviour {
     }
 
     IEnumerator DelayCastSkill1(float time) {
-        spineAnimationState.SetAnimation(0, tu_skill0Animation, false);
+        spineAnimationState.SetAnimation(0, tuskill0Animation, false);
         yield return new WaitForSeconds(time);
-        spineAnimationState.SetAnimation(0, skill_1Animation, false);
+        spineAnimationState.SetAnimation(0, skill1Animation, false);
         yield return new WaitForSeconds(1f);
 
         SetIdleAnim();
@@ -143,7 +143,9 @@ public class CharacterSketon : MonoBehaviour {
     }
 
     IEnumerator DelayCastSkill2(float time) {
-        spineAnimationState.SetAnimation(0, skill_1Animation, false);
+        spineAnimationState.TimeScale = 3f;
+        spineAnimationState.SetAnimation(0, skill1Animation, false);
+        spineAnimationState.TimeScale = 1f;
         yield return new WaitForSeconds(time);
 
         SetIdleAnim();
@@ -154,22 +156,24 @@ public class CharacterSketon : MonoBehaviour {
     }
 
     IEnumerator DelayCastSkill3(float time) {
-        spineAnimationState.SetAnimation(0, tu_skill4Animation, false);
+        spineAnimationState.SetAnimation(0, tuskill4Animation, false);
         yield return new WaitForSeconds(time);
-        spineAnimationState.SetAnimation(0, skill_4Animation, false);
+        spineAnimationState.SetAnimation(0, skill4Animation, false);
         yield return new WaitForSeconds(1f);
 
         SetIdleAnim();
     }
     //4
     public void SetAttackSkill4Anim(float time) {
+        spineAnimationState.TimeScale = 3f;
         StartCoroutine(DelayCastSkill4(time));
+
     }
 
     IEnumerator DelayCastSkill4(float time) {
-        spineAnimationState.SetAnimation(0, skill_3Animation, false);
+        spineAnimationState.SetAnimation(0, skill3Animation, false);
         yield return new WaitForSeconds(time);
-
+        spineAnimationState.TimeScale = 1f;
         SetIdleAnim();
     }
     #endregion

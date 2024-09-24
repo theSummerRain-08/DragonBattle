@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6c88e76926c9a64b92874e628e03a83, type: 3}
+  m_Name: CoinScreen
+  m_EditorClassIdentifier: 
+  m_Texture: {fileID: 2800000, guid: fe902379ba245914d9536758848c0055, type: 3}
+  m_Padding: 1
+  m_MaxSize: 4096
+  m_PackingMethod: 0
+  m_DefaultPivot: 0
+  m_DefaultCustomPivot: {x: 0.5, y: 0.5}
+  m_Sprites:
+  - source: {fileID: 21300000, guid: 4ddc365cc482b944ab65e3595ce9664e, type: 3}
+    targetSprite: {fileID: -1708312808, guid: fe902379ba245914d9536758848c0055, type: 3}
+  - source: {fileID: 21300000, guid: 89c74fa058bb1c7489a219441c597961, type: 3}
+    targetSprite: {fileID: -280827402, guid: fe902379ba245914d9536758848c0055, type: 3}
+  - source: {fileID: 21300000, guid: 161af9d6eb00e3c40b2c086059a6246d, type: 3}
+    targetSprite: {fileID: 352144210, guid: fe902379ba245914d9536758848c0055, type: 3}
+  - source: {fileID: 21300000, guid: edcf525a96ef879479ae6fee2079b561, type: 3}
+    targetSprite: {fileID: -1929784224, guid: fe902379ba245914d9536758848c0055, type: 3}
+  - source: {fileID: 21300000, guid: 9982a6dd7a41f4b47a1664f6293fd544, type: 3}
+    targetSprite: {fileID: 49095904, guid: fe902379ba245914d9536758848c0055, type: 3}
+  - source: {fileID: 21300000, guid: 878004a2f52cdc748893de418f0af5d0, type: 3}
+    targetSprite: {fileID: 1215465487, guid: fe902379ba245914d9536758848c0055, type: 3}
+  - source: {fileID: 21300000, guid: 8b1f14e92ae487e409f6b7b3b9d84479, type: 3}
+    targetSprite: {fileID: -1157516447, guid: fe902379ba245914d9536758848c0055, type: 3}
+  - source: {fileID: 21300000, guid: c91769e2066c92243b72414669c69229, type: 3}
+    targetSprite: {fileID: -1235772517, guid: fe902379ba245914d9536758848c0055, type: 3}
+  - source: {fileID: 21300000, guid: d50fb589bb912574c82a98db3679a6d4, type: 3}
+    targetSprite: {fileID: 1909137763, guid: fe902379ba245914d9536758848c0055, type: 3}
+  - source: {fileID: 21300000, guid: e22be574eec1a3147bf77e439e6c576c, type: 3}
+    targetSprite: {fileID: -252559833, guid: fe902379ba245914d9536758848c0055, type: 3}
+  - source: {fileID: 21300000, guid: 6c2365528721a4342ad3c653da22e8eb, type: 3}
+    targetSprite: {fileID: 1723464962, guid: fe902379ba245914d9536758848c0055, type: 3}
+  - source: {fileID: 21300000, guid: 879e2cac08f61bc4182a9e0297475b20, type: 3}
+    targetSprite: {fileID: -1610488399, guid: fe902379ba245914d9536758848c0055, type: 3}
+  - source: {fileID: 21300000, guid: 138d946871362d64a9796d647648401a, type: 3}
+    targetSprite: {fileID: -512665366, guid: fe902379ba245914d9536758848c0055, type: 3}
+  m_PendingActions: []

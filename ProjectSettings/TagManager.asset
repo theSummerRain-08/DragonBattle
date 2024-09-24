@@ -11,6 +11,8 @@ TagManager:
   - EnemySkill
   - Buff
   - Coin
+  - NormalAttack
+  - UltSkill
   layers:
   - Default
   - TransparentFX

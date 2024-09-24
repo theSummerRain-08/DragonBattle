@@ -8,16 +8,17 @@ using TMPro;
 public class TransformUI : MonoBehaviour
 {
     [SerializeField] Button playButton;
-
+    [SerializeField] Button coinButton;
     [SerializeField] TextMeshProUGUI goldText;
     [SerializeField] TextMeshProUGUI playerNameText;
     private void Awake() {
         playButton.onClick.AddListener(PlayButton);
-
+        coinButton.onClick.AddListener(CoinButton);
     }
     private void OnEnable() {
         playerNameText.text = GameConstants.playerName[(int)CharacterSelectManager.characterToSelect];
         playButton.interactable = true;
+        coinButton.interactable = true;
         StartCoroutine(FadeInWait());
        
     }
@@ -33,6 +34,7 @@ public class TransformUI : MonoBehaviour
     }
     void PlayButton() {
         playButton.interactable = false;
+        coinButton.interactable = false;
         switch (CircleChooseCharUI.charSelectNum) {
             case 0:
                 CharacterSelectManager.characterToSelect = CharacterToSelect.Goku;
@@ -54,6 +56,29 @@ public class TransformUI : MonoBehaviour
         SoundEffectManager.Instance.ActiveClickSound();
         FadeInOutManager.Instance.FadeOut();
     }
-
+    void CoinButton() {
+        playButton.interactable = false;
+        coinButton.interactable = false;
+        switch (CircleChooseCharUI.charSelectNum) {
+            case 0:
+                CharacterSelectManager.characterToSelect = CharacterToSelect.Goku;
+                break;
+            case 1:
+                CharacterSelectManager.characterToSelect = CharacterToSelect.Vegeta;
+                break;
+            case 2:
+                CharacterSelectManager.characterToSelect = CharacterToSelect.Trunk;
+                break;
+            case 3:
+                CharacterSelectManager.characterToSelect = CharacterToSelect.None;
+                break;
+            case 4:
+                CharacterSelectManager.characterToSelect = CharacterToSelect.Gohan;
+                break;
+        }
+        PanelManager.Instance.SwitchActiveUI(GameUI.Transform, GameUI.CoinsScreen);
+        SoundEffectManager.Instance.ActiveClickSound();
+        FadeInOutManager.Instance.FadeOut();
+    }
 
 }

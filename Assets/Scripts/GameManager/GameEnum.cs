@@ -20,7 +20,8 @@ public enum CharacterToSelect {
     Goku,
     Vegeta,
     Trunk,
-    Gohan
+    Gohan,
+    None
 }
 public enum Results {
     Win,

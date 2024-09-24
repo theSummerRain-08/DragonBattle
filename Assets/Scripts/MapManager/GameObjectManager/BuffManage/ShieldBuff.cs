@@ -24,7 +24,4 @@ public class ShieldBuff : MonoBehaviour
         }
 
     }
-    private void OnDisable() {
-        this.gameObject.SetActive(false);
-    }
 }

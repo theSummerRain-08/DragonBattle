@@ -11,10 +11,10 @@ public class N_AttackObj4 : NormalAttackObjj
 
         Move();
     }
-
+    public GameObject particleSystemPrefab;
     public override void Move() {
         float heightParabol = -1f;
-        float speed = 9.5f;
+        float speed = 11f;
         GoParabol(heightParabol, speed, -10f, 10f);
     }
 
@@ -22,6 +22,11 @@ public class N_AttackObj4 : NormalAttackObjj
         if (collision.CompareTag("Enemy")) {
             DeSpawn();
             CharacterStats.Instance.TakeDamage(Character.Enemy, dmgPerUnit);
+        }
+        if (collision.CompareTag("EnemySkill")) {
+            Vector3 collisionPoint = collision.transform.position;
+            ObjectPooling.Instance.SpawnObject(particleSystemPrefab, collisionPoint);
+            DeSpawn();
         }
     }
 }

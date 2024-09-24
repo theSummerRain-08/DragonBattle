@@ -23,12 +23,17 @@ public class Skill2Obj : MonoBehaviour, ISkillObj
         ObjectPooling.Instance.DeSpawn(this.gameObject);
     }
 
-
+    public GameObject particleSystemPrefab;
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("Enemy")) {
             DeSpawn();
             CharacterStats.Instance.TakeDamage(Character.Enemy, 
                 CharacterStats.Instance.PlayerAtk * GameConstants.dmgScale[(int)AttackType.Skill2]);
+        }
+        if (collision.CompareTag("EnemySkill")) {
+            Vector3 collisionPoint = collision.transform.position;
+            ObjectPooling.Instance.SpawnObject(particleSystemPrefab, collisionPoint);
+            DeSpawn();
         }
     }
 }

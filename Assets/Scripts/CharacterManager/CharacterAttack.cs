@@ -37,26 +37,26 @@ public class CharacterAttack : MonoBehaviour
         switch (type) {
             case AttackType.NormalAttack:
                 skillPosiontionY = 0.5f;
-                skillPositionX = 1f;
+                skillPositionX = position.x + 1f;
                 break;
             case AttackType.Skill1:
                 skillPosiontionY = 0.2f;
-                skillPositionX = 0.9f;
+                skillPositionX = position.x + 0.9f;
                 break;
             case AttackType.Skill2:
                 skillPosiontionY = 0.5f;
-                skillPositionX = 1.5f;
+                skillPositionX = position.x + 1.5f;
                 break;
             case AttackType.Skill3:
                 skillPosiontionY = 2.5f;
-                skillPositionX = 0.5f;
+                skillPositionX = position.x + 0.5f;
                 break;
             case AttackType.Skill4:
                 skillPosiontionY = 0.5f;
-                skillPositionX = 1.5f;
+                skillPositionX = -12f;
                 break;
         }
-        return new Vector3(position.x + skillPositionX, position.y + skillPosiontionY, position.z);
+        return new Vector3(skillPositionX, position.y + skillPosiontionY, position.z);
 
     }
 

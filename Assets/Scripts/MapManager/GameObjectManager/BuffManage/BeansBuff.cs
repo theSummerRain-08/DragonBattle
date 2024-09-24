@@ -19,11 +19,9 @@ public class BeansBuff : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("Player")) {
             gameObject.SetActive(false);
-            CurrentCurrency.Instance.UpdateCurrentcy(Buff.Bean, 1);
+            CharacterStats.Instance.BuffMana();
+            CharacterStats.Instance.BuffHp();
         }
 
-    }
-    private void OnDisable() {
-        this.gameObject.SetActive(false);
     }
 }

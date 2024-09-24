@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7015788679888178817}
   - component: {fileID: 2795898527714369804}
   - component: {fileID: 4977064894387756291}
+  - component: {fileID: -2356234432977046439}
   m_Layer: 0
   m_Name: Enemy_Skill_3
   m_TagString: EnemySkill
@@ -133,3 +134,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db498d7853c9b547a6bd63cfe10b88e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 25
+  dmgScale: 1
+  isUltSkill: 0
+  particleSystemPrefab: {fileID: 4990919041896070160, guid: c5e8782bcdf56cb4a81e48b5f2f1d434, type: 3}
+--- !u!50 &-2356234432977046439
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3138031294924511938}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

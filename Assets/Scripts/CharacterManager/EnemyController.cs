@@ -3,13 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyController : CharacterController {
     [SerializeField] SkeletonDataAsset[] newSkeletonDataAsset;
     private Vector3 targetPosition;
     private bool isMoving = false;
+    [SerializeField] GameObject bumpObject;
+    public float delayTime;
+    public float enemySpeed = 20f;
+    [SerializeField] Transform enemyFightPos;
+    [SerializeField] Transform enemySpawnPos;
     private void OnEnable() {
-        Move();
+        delayTime = GameConstants.enemyDelayTime[CharacterStats.Instance.EnemyLevel - 1];  
+
         //if (CharacterStats.Instance.EnemyLevel == 1) return;
         StartCoroutine(ChangeSkin());
 
@@ -17,6 +24,7 @@ public class EnemyController : CharacterController {
     IEnumerator ChangeSkin() { 
         yield return new WaitForSeconds(0.5f);
         characterSketon.ChangeEnemySkeletonData(newSkeletonDataAsset[CharacterStats.Instance.EnemyLevel - 1]);
+        Move();
     }
     private void Start() {
 
@@ -32,7 +40,8 @@ public class EnemyController : CharacterController {
 
     private IEnumerator MoveCharacterEvery5Seconds() {
         while (true) {
-            yield return new WaitForSeconds(5f);
+            
+            yield return new WaitForSeconds(delayTime);
             // Chọn tọa độ x và y ngẫu nhiên
             float randomX = GameUltis.RandomIntNumber(0, 7);
             float randomY = GameUltis.RandomIntNumber(-2, 3);
@@ -49,7 +58,7 @@ public class EnemyController : CharacterController {
         isMoving = true;
 
         float journeyLength = Vector3.Distance(transform.position, target);
-        float journeyTime = journeyLength / 10f;
+        float journeyTime = journeyLength / enemySpeed;
 
 
         float elapsedTime = 0f;
@@ -62,7 +71,7 @@ public class EnemyController : CharacterController {
 
         transform.position = target;
 
-        int type = GameUltis.RandomIntNumber(1, 3); ;
+        int type = GameUltis.RandomIntNumber(1, 3); 
         Attack((AttackType)type);
     }
 
@@ -92,11 +101,11 @@ public class EnemyController : CharacterController {
 
     public float TimeDelaySkill(AttackType type) {
         float enemyLv = CharacterStats.Instance.EnemyLevel;
-        if (enemyLv == 1 || enemyLv == 3 || enemyLv == 6 || enemyLv == 7 || enemyLv == 8 || enemyLv == 10) {
+        if (enemyLv == 1 || enemyLv == 3 || enemyLv == 6 || enemyLv == 7) {
             float[] value = new float[4] { 00000, 0.8f, 0.8f, 0.8f };
             return value[(int)type];
         }
-        else if (enemyLv == 2 || enemyLv == 4 || enemyLv == 5 || enemyLv == 8 || enemyLv == 9) {
+        else if (enemyLv == 2 || enemyLv == 4 || enemyLv == 5  || enemyLv == 9 || enemyLv == 8 || enemyLv == 10) {
             float[] value = new float[4] { 00000, 1.2f, 1.4f, 1.4f };
             return value[(int)type];
         }
@@ -110,10 +119,16 @@ public class EnemyController : CharacterController {
     protected override void Die() {
         EnemySoundManager.Instance.SetDieSound();
         this.gameObject.SetActive(false);
+        bumpObject.transform.position = this.transform.position;
+        bumpObject.SetActive(true);
     }
+
+    public GameObject particleSystemPrefab;
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.CompareTag("PlayerSkill")) {
+        if (collision.CompareTag("PlayerSkill") || collision.CompareTag("NormalAttack")|| collision.CompareTag("UltSkill")) {
             EnemySoundManager.Instance.SetTakeDmgSound();
+            Vector3 collisionPoint = collision.transform.position;
+            ObjectPooling.Instance.SpawnObject(particleSystemPrefab, collisionPoint);
         }
 
     }

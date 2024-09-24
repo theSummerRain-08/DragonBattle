@@ -7,6 +7,7 @@ public class Skill3Obj : MonoBehaviour, ISkillObj {
     GameObject enemyObject = null;
     private float timeToMove = 3;
     private SpriteRenderer spriteRenderer = null;
+    private float scaleValue = 11f;
     private void Awake() {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -38,7 +39,7 @@ public class Skill3Obj : MonoBehaviour, ISkillObj {
 
     IEnumerator ScaleOverTime() {
         yield return new WaitForSeconds(timeToMove);
-        this.transform.localScale *= 8f;
+        this.transform.localScale *= scaleValue;
         spriteRenderer.enabled = true;
         canMove = true;
     }
@@ -53,7 +54,7 @@ public class Skill3Obj : MonoBehaviour, ISkillObj {
 
     private void OnDisable() {
         SoundEffectManager.Instance.ActiveSkillSound(1);
-        this.transform.localScale /= 8f;
+        this.transform.localScale /= scaleValue;
         spriteRenderer.enabled = false;
         canMove = false;
     }

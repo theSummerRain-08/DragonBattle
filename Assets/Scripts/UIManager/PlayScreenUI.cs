@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static CharacterStats;
@@ -10,6 +11,7 @@ public class PlayScreenUI : MonoBehaviour {
     [SerializeField] Button[] attackbutton;
     [SerializeField] PlayerController playerController;
     [SerializeField] Button beanButton;
+    [SerializeField] Button pauseButton;
     [Header("Bars")]
     [SerializeField] Image playerHealth;
     [SerializeField] Image playerMana;
@@ -25,6 +27,8 @@ public class PlayScreenUI : MonoBehaviour {
     [SerializeField] private GameObject enemyObj;
 
     [SerializeField] TextMeshProUGUI enemyLevel;
+    [SerializeField] GameObject pauseMask;
+    public static bool isEndGame;
     private void Awake() {
         for (int i = 0; i < attackbutton.Length; i++) {
             int index = i;
@@ -35,20 +39,23 @@ public class PlayScreenUI : MonoBehaviour {
                 attackbutton[i].onClick.AddListener(() => CallAttackFuncion((AttackType)index));
         }
         beanButton.onClick.AddListener(BeanButton);
+        pauseButton.onClick.AddListener(PauseButton);
     }
     void CallAttackFuncion(AttackType type) {
+        if (isEndGame) return; 
         if (GameEnum.characterState == CharacterState.Attack || GameEnum.characterState == CharacterState.Attack3) return;
         playerController.Attack(type);
         
     }
     void CallTransformFuncion() {
+        if (isEndGame) return;
         if (GameEnum.characterState == CharacterState.Transform) return;
         playerController.UltimateSkill();
         
     }
     private void OnEnable() {
         CurrentCurrency.Instance.PreviousGoldUpdate();
-       
+        isEndGame = false;
     }
 
     void Update() {
@@ -57,6 +64,7 @@ public class PlayScreenUI : MonoBehaviour {
             CheckForEnemyState();
         }
         if (Instance.PlayerHp <= 0) {
+            isEndGame = true;
             CheckPlayerHp();
         }
         UpdateStatusBar(playerHealth, Instance.PlayerHp, Instance.maxPlayerHp);
@@ -76,12 +84,23 @@ public class PlayScreenUI : MonoBehaviour {
     public void CannotUpgrade() {
         attackbutton[5].interactable = false;
     }
+    [SerializeField] ParticleSystem healingParticle;
     public void BeanButton() {
-        if (CurrentCurrency.Instance.CurentBean == 0) return;
+        if (CurrentCurrency.Instance.CurentBean == 0) { 
+            if (CurrentCurrency.Instance.CurrentGold < 100)
+            return;
+            CurrentCurrency.Instance.UpdateCurrentcy(Buff.Coin, -100f);
+        }
+        healingParticle.Play(); 
         SoundEffectManager.Instance.ActiveClickSound();
-        Instance.PlusMana(10);
+        Instance.BuffMana();
         Instance.BuffHp();
-        CurrentCurrency.Instance.UpdateCurrentcy(Buff.Bean, -1);
+        if (CurrentCurrency.Instance.CurentBean != 0)
+            CurrentCurrency.Instance.UpdateCurrentcy(Buff.Bean, -1);
+    }
+    public void PauseButton() {
+        pauseMask.SetActive(true);
+        Time.timeScale = 0;
     }
     void CheckInterctiveButton() {
 
@@ -134,6 +153,7 @@ public class PlayScreenUI : MonoBehaviour {
                 case 2:
                     if (Instance.EnemyLevel == 5 || Instance.EnemyLevel == 6) {
                         SetActiveResult(Results.Win);
+                        isEndGame = true;
                     }
                     if (Instance.EnemyLevel == 9) { 
                         changerEnemyState.SetActive(true);
@@ -141,6 +161,7 @@ public class PlayScreenUI : MonoBehaviour {
                     break;
                 case 3:
                     SetActiveResult(Results.Win);
+                    isEndGame = true;
                     CharacterSelectManager.enemyState = 1;
                     break;
 
@@ -149,6 +170,7 @@ public class PlayScreenUI : MonoBehaviour {
 
         if (!ChangeToNextState()) {
             SetActiveResult(Results.Win);
+            isEndGame = true;
         }
 
     }

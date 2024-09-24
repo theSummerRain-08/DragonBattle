@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using Unity.VisualScripting;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 using static GameEnum;
 
 public class PlayerController : CharacterController {
     [SerializeField] private LayerMask layerMask;
     [SerializeField] GameObject shield;
-
+    [SerializeField] GameObject bumpObject;
+    public Transform spawnPosition;
     public static bool hasShield;
     private void Start() {
         characterState = CharacterState.Idle;
@@ -21,30 +18,54 @@ public class PlayerController : CharacterController {
     }
 
     void Update() {
-        if (Input.touchCount == 1) {
-            if (Input.GetMouseButton(0)) {
-                Move();
-            }
-        }
         if (CharacterStats.Instance.PlayerHp <= 0) {
             Die();
         }
-
         if (hasShield) { shield.SetActive(true); }
-        
+
+
+        if (Input.touchCount > 0) {
+            Move();
+        }
+        else
+            hasTouched = false;
+
     }
 
     #region Move funcion
+
+    private float moveSpeed = 15f;
+    Touch currentTouch;
+    bool hasTouched = false;
     protected override void Move() {
         if (characterState == CharacterState.Attack) return;
-        if (Hit().collider != null) {
-            UpdatePosition(Hit());
+
+        Touch touch = Input.GetTouch(0);
+        if (hasTouched) {
+            if (touch.fingerId != currentTouch.fingerId) {
+                return;
+            }
+        } else {
+            currentTouch = touch;
+            hasTouched = true;
         }
+
+        Vector3 touchPosition = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, 10f));
+        touchPosition.z = 0f;
+        MoveCharacter(touchPosition);
+
+    }
+    private void MoveCharacter(Vector3 targetPosition) {
+        if (Hit().collider == null) return;
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        float distance = Vector2.Distance(transform.position, targetPosition);
+        transform.position += direction * Mathf.Min(distance, moveSpeed * Time.deltaTime);
     }
     private RaycastHit2D Hit() {
         Vector2 rayOrigin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         return Physics2D.Raycast(rayOrigin, Vector2.zero, Mathf.Infinity, layerMask);
     }
+
 
     private void UpdatePosition(RaycastHit2D hit) {
         float lerfSpeed = 6f;
@@ -59,26 +80,27 @@ public class PlayerController : CharacterController {
         if (characterState != CharacterState.Idle) return;
         if (CharacterStats.Instance.PlayerMana < GameConstants.ManaToCastSkill[(int)type]) return;
         //characterState = (type == AttackType.Skill3) ? CharacterState.Attack3 : CharacterState.Attack;
-        characterState = CharacterState.Attack;
         switch (type) {
             case AttackType.NormalAttack:
                 characterParticle.PlayHandParticle();
                 break;
             case AttackType.Skill1:
                 characterParticle.PlayKamehaEff();
+                characterState = CharacterState.Attack;
                 break;
             case AttackType.Skill2:
                 characterParticle.PlayHandParticle();
                 break;
             case AttackType.Skill3:
                 characterParticle.PlayKameha2Eff();
+                characterState = CharacterState.Attack;
                 break;
             case AttackType.Skill4:
                 characterParticle.PlayHandParticle();
                 break;
-        }  
+        }
 
-        if (type == AttackType.Skill3) { 
+        if (type == AttackType.Skill3) {
             StartCoroutine(ChangeState());
         }
 
@@ -88,19 +110,16 @@ public class PlayerController : CharacterController {
         CharacterSound.Instance.SetAtkSound(type);
         CastSkillFuncion(type);
     }
-    IEnumerator ChangeState() { 
+    IEnumerator ChangeState() {
         yield return new WaitForSeconds(0.5f);
         characterState = CharacterState.Attack3;
     }
 
     void CastSkillFuncion(AttackType type) {
         CharacterStats.Instance.ManaToCastSkill(type);
-        if (type == AttackType.NormalAttack)
-        {
+        if (type == AttackType.NormalAttack) {
             StartCoroutine(CastNormalAttack(type, characterAttack.SkillPosition(type, transform.position), characterAttack.TimeToCastSkill(type)));
-        } 
-        else 
-        {
+        } else {
             StartCoroutine(CastSkill(type, characterAttack.SkillPosition(type, transform.position), characterAttack.TimeToCastSkill(type)));
         }
 
@@ -124,18 +143,20 @@ public class PlayerController : CharacterController {
     protected override void Die() {
         CharacterSound.Instance.SetDieSound();
         this.gameObject.SetActive(false);
+        bumpObject.transform.position = this.transform.position;
+        bumpObject.SetActive(true);
     }
 
-
+    public ParticleSystem lightningPar;
     public void UltimateSkill() {
         if (CharacterStats.Instance.PlayerLevel == GameConstants.levelCharacter.Length) return;
         if (characterState != CharacterState.Idle) return;
 
+        lightningPar.Play();
         characterParticle.PlayHandParticle();
         CharacterSound.Instance.SetTransformSound();
         UpdateStatsVakue();
         UpdateSkin();
-
         StartCoroutine(SetActiveShield());
     }
     void UpdateStatsVakue() {
@@ -147,21 +168,33 @@ public class PlayerController : CharacterController {
         float skinValue = CharacterStats.Instance.PlayerLevel - 1;
         characterSketon.UpdateSkin(skinValue.ToString());
     }
-    IEnumerator SetActiveShield() { 
-        shield.SetActive(true);
-        yield return new WaitForSeconds (1);
-        shield.SetActive(false);
+    IEnumerator SetActiveShield() {
+        if (!hasShield) {
+            shield.SetActive(true);
+            yield return new WaitForSeconds(1);
+            shield.SetActive(false);
+        }
         characterState = CharacterState.Idle;
     }
     #endregion
 
     #region Take dmg
+    public GameObject particleSystemPrefab;
+    public ParticleSystem healingPar;
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("Buff")) {
+            SoundEffectManager.Instance.ActiveCollectItemSound(Item.Buff);
+            healingPar.Play();
+        }
+        if (collision.CompareTag("Shield")) {
             SoundEffectManager.Instance.ActiveCollectItemSound(Item.Buff);
         }
         if (collision.CompareTag("Coin")) {
             SoundEffectManager.Instance.ActiveCollectItemSound(Item.Coin);
+        }
+        if (collision.CompareTag("EnemySkill")) {
+            Vector3 collisionPoint = collision.transform.position;
+            ObjectPooling.Instance.SpawnObject(particleSystemPrefab, collisionPoint);
         }
 
     }
@@ -171,5 +204,9 @@ public class PlayerController : CharacterController {
         characterParticle.DisplayKamehaEff();
         characterParticle.StopHandParticle();
         characterParticle.DisplayKameha2Eff();
+        if (CharacterStats.Instance.PlayerHp > 0) {
+            CharacterStats.Instance.ResetStats(Character.Player, true);
+            this.transform.position = spawnPosition.position;
+        }
     }
 }

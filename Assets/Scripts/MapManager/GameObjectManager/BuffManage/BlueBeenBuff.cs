@@ -24,7 +24,4 @@ public class BlueBeenBuff : MonoBehaviour
         }
 
     }
-    private void OnDisable() {
-        this.gameObject.SetActive(false);
-    }
 }

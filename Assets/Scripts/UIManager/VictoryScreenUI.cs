@@ -28,7 +28,7 @@ public class VictoryScreenUI : MonoBehaviour
     }
     private void OnEnable() {
         playerUI.sprite = playerSprite[(int)CharacterSelectManager.characterToSelect];
-        SoundEffectManager.Instance.EarnCoinSound();
+        SoundEffectManager.Instance.EarnCoinSound();  
         scoreText.text = CurrentCurrency.Instance.levelCoin.ToString();
         earnCoin = CurrentCurrency.Instance.CurrentGold - CurrentCurrency.Instance.previousGold;
         if (CurrentCurrency.Instance.CurrentGold <= 9999999) {

@@ -9,7 +9,7 @@ public class Skill4Obj : MonoBehaviour, ISkillObj
     private float speed = 25f;
     private void Update() {
         Move();
-        if (GameUltis.ExitScreen(this.transform.position)) { 
+        if (GameUltis.ExitRightScreen(this.transform.position)) { 
             DeSpawn();
         }
     }
@@ -28,7 +28,7 @@ public class Skill4Obj : MonoBehaviour, ISkillObj
         if (collision.CompareTag("Enemy")) {
             DeSpawn();
             CharacterStats.Instance.TakeDamage(Character.Enemy, 
-                CharacterStats.Instance.PlayerAtk * GameConstants.dmgScale[(int)AttackType.Skill2]);
+                CharacterStats.Instance.PlayerAtk * GameConstants.dmgScale[(int)AttackType.Skill4]);
         }
     }
 }

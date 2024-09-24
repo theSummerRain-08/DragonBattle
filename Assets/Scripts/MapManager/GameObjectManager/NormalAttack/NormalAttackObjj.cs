@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 public class NormalAttackObjj : MonoBehaviour, ISkillObj {
-    protected float weight = 13f;
+    protected float weight = 20f;
     protected float dmgPerUnit;
 
     protected Vector3 start;
@@ -12,6 +12,7 @@ public class NormalAttackObjj : MonoBehaviour, ISkillObj {
     protected float startTime;
     protected float journeyLength;
     private TrailRenderer trailRenderer;
+    protected float[] randomNum = new float[5];
     private void Awake() {
         trailRenderer = GetComponent<TrailRenderer>();
     }
@@ -19,6 +20,10 @@ public class NormalAttackObjj : MonoBehaviour, ISkillObj {
     private void OnEnable() {
         dmgPerUnit = CharacterStats.Instance.PlayerAtk * GameConstants.dmgScale[(int)AttackType.NormalAttack];
         StartCoroutine(UpdatePosition());
+        randomNum[0] = Random.Range(0, 3);
+        randomNum[1] = Random.Range(0, 2);
+        randomNum[2] = Random.Range(0, 2);
+        randomNum[4] = Random.Range(0, 4);
     }
     public virtual void Move() {
 
@@ -49,12 +54,14 @@ public class NormalAttackObjj : MonoBehaviour, ISkillObj {
 
 
     protected void GoStraight() {
-        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         float speed = 10f;
-        float newPositionX = transform.position.x + speed * Time.deltaTime;
-        transform.position = new Vector3(newPositionX, transform.position.y, transform.position.z);
-        
+        float angleRad = transform.eulerAngles.z * Mathf.Deg2Rad; // Chuyển đổi góc quay thành radian
+        Vector3 direction = new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad), 0f); // Tính toán hướng dựa trên góc quay
+
+        // Di chuyển theo hướng tính được
+        transform.position += direction * speed * Time.deltaTime;
     }
+
 
 
     public void DeSpawn() {

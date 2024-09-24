@@ -60,4 +60,8 @@ public static class GameUltis {
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(currentPosition);
         return (screenPosition.x < 0 );
     }
+    public static bool ExitRightScreen(Vector3 currentPosition) {
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(currentPosition);
+        return (screenPosition.x > Screen.width);
+    }
 }
